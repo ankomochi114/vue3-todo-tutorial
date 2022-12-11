@@ -2,8 +2,8 @@
 import { ref } from "vue";
 import type { Ref } from 'vue';
 
-const todos: Ref<String[]> = ref([]);
-const doneTodos: Ref<String[]>  = ref([]);
+const todos: Ref<string[]> = ref([]);
+const doneTodos: Ref<string[]>  = ref([]);
 
 const form = ref(true);
 const inputText = ref("");
