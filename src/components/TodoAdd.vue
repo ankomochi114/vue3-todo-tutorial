@@ -16,13 +16,14 @@ const loading = ref(false);
 
 <template>
   <v-form v-model="form" @submit.prevent="onSubmit">
-    <v-row>
+    <v-row align="center">
       <v-col cols="12" md="8">
         <v-text-field
           :model-value="modelValue"
           @input="emit('update:modelValue', $event.target.value)"
           clearable
           label="Label"
+          hide-details="auto"
         ></v-text-field>
       </v-col>
       <v-col cols="12" md="4">
