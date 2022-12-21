@@ -4,7 +4,7 @@ import Edit from "./pages/Edit.vue";
 
 const routes = [
   { path: "/", name: "Home", component: Home },
-  { path: "/edit", name: "Edit", component: Edit },
+  { path: "/:id/edit", name: "Edit", component: Edit, props: true },
 ];
 
 const router = createRouter({

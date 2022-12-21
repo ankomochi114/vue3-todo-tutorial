@@ -2,16 +2,16 @@
 import TodoAdd from "@/components/TodoAdd.vue";
 import TodoInfoAlert from "@/components/TodoInfoAlert.vue";
 import TodoErrorAlert from "@/components/TodoErrorAlert.vue";
+import { useTodosStore } from "../store/todos";
 import { ref } from "vue";
 import type { Ref } from "vue";
-
-const todos: Ref<string[]> = ref([]);
-const doneTodos: Ref<string[]> = ref([]);
 
 const form = ref(true);
 const inputText = ref("");
 const loading = ref(false);
 const errors = ref("");
+
+const store = useTodosStore();
 
 /**
  * タスクの登録処理
@@ -23,7 +23,7 @@ const onSubmit = () => {
     return (errors.value = "文字を入力してください");
 
   loading.value = true;
-  todos.value.unshift(inputText.value);
+  store.addTodo(inputText.value);
   inputText.value = "";
   loading.value = false;
   errors.value = "";
@@ -34,14 +34,12 @@ const onSubmit = () => {
  * @return 新しいtodoリスト
  */
 const clearDoneTodos = () => {
-  return (todos.value = todos.value.filter((todo) =>
-    doneTodos.value.every((element) => element !== todo)
-  ));
+  store.doneTodo();
 };
 </script>
 
 <template>
-  <TodoInfoAlert alertText="ToDoがまだありません。" :todos="todos" />
+  <TodoInfoAlert alertText="ToDoがまだありません。" :todos="store.todos" />
   <TodoErrorAlert :errors="errors" />
   <TodoAdd
     v-model="inputText"
@@ -56,16 +54,18 @@ const clearDoneTodos = () => {
       </tr>
     </thead>
     <tbody>
-      <tr v-for="todo in todos">
+      <tr v-for="(todo, index) in store.todos">
         <td>
           <v-checkbox
-            v-model="doneTodos"
+            v-model="store.doneTodos"
             :label="todo"
             :value="todo"
             hide-details="auto"
           ></v-checkbox>
         </td>
-        <td><v-btn color="secondary">編集</v-btn></td>
+        <td>
+          <v-btn color="secondary" :to="`/${index}/edit`">編集</v-btn>
+        </td>
       </tr>
     </tbody>
   </v-table>
